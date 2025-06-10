@@ -1,5 +1,4 @@
 ;; title: Bitcoin-Backed-Synthetic-Assets-Protocol
-
 ;; Error codes
 (define-constant ERR-NOT-AUTHORIZED (err u1000))
 (define-constant ERR-INSUFFICIENT-COLLATERAL (err u1001))
@@ -24,7 +23,6 @@
 (define-constant COOLDOWN-PERIOD u86400) ;; 24 hours
 (define-constant PRECISION-FACTOR u1000000) ;; 6 decimals
 
-
 ;; Supported Asset Types
 (define-map supported-assets
   { asset-id: uint }
@@ -34,5 +32,36 @@
     max-supply: uint,
     current-supply: uint,
     collateral-ratio: uint
+  }
+)
+
+;; Vaults - where users lock their BTC collateral to mint synthetic assets
+(define-map vaults
+  { owner: principal, asset-id: uint }
+  {
+    collateral-amount: uint,
+    debt-amount: uint,
+    last-update: uint,
+    liquidation-in-progress: bool
+  }
+)
+
+;; Price Oracle data
+(define-map asset-prices
+  { asset-id: uint }
+  {
+    price: uint,
+    last-update: uint,
+    source: principal
+  }
+)
+
+;; Liquidity Pools
+(define-map liquidity-pools
+  { asset-id: uint }
+  {
+    stx-balance: uint,
+    synthetic-balance: uint,
+    total-shares: uint
   }
 )
